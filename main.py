@@ -87,7 +87,7 @@ class TherapyChatbot:
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         self.base_model_name = "microsoft/phi-2"
         self.peft_model_name = "ezahpizza/mindease-phi"
-        self.hf_token = "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"
+        self.hf_token = HF_TOKEN
         self.torch_dtype = torch.float16 if torch.cuda.is_available() else torch.float32
         self.tokenizer = None
         self.model = None
@@ -311,7 +311,7 @@ async def chat(chat_input: ChatMessage):
 @app.get("/chat/history/{user_id}")
 async def get_chat_history(user_id: str):
     try:
-        messages = await db.chat_messages.find(
+        messages = await database.chat_messages.find(
             {"user_id": user_id}
         ).sort("timestamp", 1).to_list(length=100)
         
